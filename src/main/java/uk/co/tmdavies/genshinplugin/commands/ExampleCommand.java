@@ -1,9 +1,9 @@
-package xyz.grasscutters.pltm.commands;
+package uk.co.tmdavies.genshinplugin.commands;
 
 import emu.grasscutter.command.Command;
 import emu.grasscutter.command.CommandHandler;
 import emu.grasscutter.game.player.Player;
-import xyz.grasscutters.pltm.PluginTemplate;
+import uk.co.tmdavies.genshinplugin.GenshinPlugin;
 
 import java.util.List;
 
@@ -35,7 +35,7 @@ public final class ExampleCommand implements CommandHandler {
      */
     @Override public void execute(Player sender, Player targetPlayer, List<String> args) {
         var joined = String.join(" ", args);
-        PluginTemplate.getInstance().getLogger().info(joined);
+        GenshinPlugin.getInstance().getLogger().info(joined);
         
         if(sender != null)
             CommandHandler.sendMessage(sender, "Logged the message to the console.");

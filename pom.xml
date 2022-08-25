@@ -4,8 +4,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>xyz.grasscutters</groupId> <!-- Replace with your groupId -->
-    <artifactId>PluginTemplate</artifactId> <!-- Replace with your plugin name. -->
+    <groupId>uk.co.tmdavies</groupId> <!-- Replace with your groupId -->
+    <artifactId>GenshinPlugin</artifactId> <!-- Replace with your plugin name. -->
     <version>1.1.2-dev</version> <!-- The template's version corresponds to the latest API version. -->
 
     <properties>
@@ -29,6 +29,12 @@
             <groupId>xyz.grasscutters</groupId> <!-- Versions below 1.0.3-dev are on 'tech.xigam' -->
             <artifactId>grasscutter</artifactId>
             <version>1.2.0</version> <!-- Replace with the latest version of the API. -->
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.yaml/snakeyaml -->
+        <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+            <version>1.30</version>
         </dependency>
     </dependencies>
 </project>
