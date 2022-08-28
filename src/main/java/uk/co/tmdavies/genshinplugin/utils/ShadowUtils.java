@@ -1,6 +1,9 @@
 package uk.co.tmdavies.genshinplugin.utils;
 
 import emu.grasscutter.Grasscutter;
+import emu.grasscutter.game.player.Player;
+import emu.grasscutter.server.packet.send.PacketSceneEntityAppearNotify;
+import emu.grasscutter.utils.Position;
 import uk.co.tmdavies.genshinplugin.GenshinPlugin;
 import uk.co.tmdavies.genshinplugin.enums.Colour;
 import uk.co.tmdavies.genshinplugin.objects.PluginConfig;
@@ -80,6 +83,17 @@ public class ShadowUtils {
         for (String string : tempCodesToRemove) toReturn = toReturn.replace(Colour.SYMBOL.getColourCode().toCharArray()[0] + string, "");
 
         return toReturn.replace(Colour.SYMBOL.getColourCode().toCharArray()[0]+"", "");
+
+    }
+
+    public static void refreshScene(Player player) {
+
+        Position pos = player.getPosition();
+        int scene = player.getSceneId();
+
+        player.getWorld().transferPlayerToScene(player, 1, pos);
+        player.getWorld().transferPlayerToScene(player, scene, pos);
+        player.getScene().broadcastPacket(new PacketSceneEntityAppearNotify(player));
 
     }
 

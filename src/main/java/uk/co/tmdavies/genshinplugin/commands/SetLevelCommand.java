@@ -1,6 +1,5 @@
 package uk.co.tmdavies.genshinplugin.commands;
 
-import emu.grasscutter.GameConstants;
 import emu.grasscutter.command.Command;
 import emu.grasscutter.command.CommandHandler;
 import emu.grasscutter.game.entity.EntityAvatar;
@@ -25,12 +24,20 @@ public class SetLevelCommand implements CommandHandler {
     @Override
     public void execute(Player sender, Player targetPlayer, List<String> args) {
 
-        EntityAvatar avatar = null;
-        boolean targetSelf = false;
-
-        if (sender.getUid() == GameConstants.SERVER_CONSOLE_UID) {
+        if (sender == null) {
 
             sender.dropMessage(ShadowUtils.Colour("`rOnly in-game players can use this command."));
+
+            return;
+
+        }
+
+        EntityAvatar avatar = targetPlayer.getTeamManager().getCurrentAvatarEntity();
+        boolean targetSelf = false;
+
+        if (args.size() == 0) {
+
+            sender.dropMessage(ShadowUtils.Colour("`rUsage: /setlevel [<@UID>] <level>"));
 
             return;
 
@@ -46,29 +53,41 @@ public class SetLevelCommand implements CommandHandler {
 
         }
 
-        if (targetPlayer != null) targetPlayer.getTeamManager().getCurrentAvatarEntity();
-        else {
+        if (avatar == null) {
+
+            if (sender.getTeamManager().getCurrentAvatarEntity() == null) {
+
+                sender.dropMessage(ShadowUtils.Colour("`r[Error] Cannot grab current active avatar. SetLevelCommand#execute"));
+
+                return;
+
+            }
 
             avatar = sender.getTeamManager().getCurrentAvatarEntity();
             targetSelf = true;
 
         }
 
-        if (avatar == null) return;
+        int promotionLevel = 0;
 
-        avatar.getAvatar().setLevel(Integer.parseInt(args.get(0)));
+        if (newLevel <= 20 && newLevel >= 1) promotionLevel = 1;
+        else if (newLevel <= 50 && newLevel >= 41) promotionLevel = 2;
+        else if (newLevel <= 60 && newLevel >= 51) promotionLevel = 3;
+        else if (newLevel <= 70 && newLevel >= 61) promotionLevel = 4;
+        else if (newLevel <= 80 && newLevel >= 71) promotionLevel = 5;
+        else if (newLevel >= 81) promotionLevel = 6;
+
+        avatar.getAvatar().setPromoteLevel(promotionLevel);
+        avatar.getAvatar().setLevel(newLevel);
         avatar.getAvatar().save();
 
-        Player player = targetSelf ? sender : targetPlayer;
-        Position pos = player.getPosition();
-        int scene = player.getSceneId();
+        avatar.getAvatar().recalcStats();
 
-        player.getWorld().transferPlayerToScene(player, 1, pos);
-        player.getWorld().transferPlayerToScene(player, scene, pos);
-        player.getScene().broadcastPacket(new PacketSceneEntityAppearNotify(player));
+        Player player = targetSelf ? sender : targetPlayer;
+
+        ShadowUtils.refreshScene(player);
 
         player.dropMessage(ShadowUtils.Colour("`gSuccessfully set " + avatar.getAvatar().getAvatarData().getName() + "'s level to " + args.get(0) + "."));
-
 
     }
 
