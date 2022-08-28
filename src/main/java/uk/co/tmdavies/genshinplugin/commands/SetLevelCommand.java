@@ -24,14 +24,6 @@ public class SetLevelCommand implements CommandHandler {
     @Override
     public void execute(Player sender, Player targetPlayer, List<String> args) {
 
-        if (sender == null) {
-
-            sender.dropMessage(ShadowUtils.Colour("`rOnly in-game players can use this command."));
-
-            return;
-
-        }
-
         EntityAvatar avatar = targetPlayer.getTeamManager().getCurrentAvatarEntity();
         boolean targetSelf = false;
 

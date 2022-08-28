@@ -1,11 +1,15 @@
 package uk.co.tmdavies.genshinplugin.utils;
 
+import emu.grasscutter.GameConstants;
 import emu.grasscutter.Grasscutter;
+import emu.grasscutter.game.avatar.Avatar;
+import emu.grasscutter.game.entity.EntityAvatar;
 import emu.grasscutter.game.player.Player;
 import emu.grasscutter.server.packet.send.PacketSceneEntityAppearNotify;
 import emu.grasscutter.utils.Position;
 import uk.co.tmdavies.genshinplugin.GenshinPlugin;
 import uk.co.tmdavies.genshinplugin.enums.Colour;
+import uk.co.tmdavies.genshinplugin.enums.Element;
 import uk.co.tmdavies.genshinplugin.objects.PluginConfig;
 
 import java.io.*;
@@ -94,6 +98,60 @@ public class ShadowUtils {
         player.getWorld().transferPlayerToScene(player, 1, pos);
         player.getWorld().transferPlayerToScene(player, scene, pos);
         player.getScene().broadcastPacket(new PacketSceneEntityAppearNotify(player));
+
+    }
+
+    public static boolean isTraveller(Avatar avatar) {
+
+        int id = avatar.getAvatarId();
+
+        return id == GameConstants.MAIN_CHARACTER_MALE || id == GameConstants.MAIN_CHARACTER_FEMALE;
+
+    }
+
+    public static void setTravellerConstellations(Player player, Element element, int constellationsAmount) {
+
+        Integer[] anemoConstellations = {71,72,73,74,75,76};
+        Integer[] geoConstellations = {91,92,93,94,95,96};
+        Integer[] electroConstellations = {101,102,103,104,105,106};
+        Integer[] dendroConstellations = {111,112,113,114,115,116};
+        Integer[] constellations = {};
+
+        switch (element.getNames().get(0)) {
+
+            case "Anemo" -> constellations = anemoConstellations;
+            case "Geo" -> constellations = geoConstellations;
+            case "Electro" -> constellations = electroConstellations;
+            case "Dendro" -> constellations = dendroConstellations;
+
+        }
+
+        if (constellations.length == 0) return;
+
+        try {
+
+            Avatar avatar = player.getTeamManager().getCurrentAvatarEntity().getAvatar();
+            avatar.getTalentIdList().clear();
+
+            for (int i = 0; i < constellationsAmount; i++) {
+
+                avatar.getTalentIdList().add(constellations[i]);
+
+            }
+
+            avatar.save();
+
+        } catch (RuntimeException e) {
+
+            player.dropMessage(ShadowUtils.Colour("`rError setting constellations for "
+                    + player.getTeamManager().getCurrentAvatarEntity().getAvatar().getAvatarData().getName()
+                    + "."));
+
+            Grasscutter.getLogger().error("Error setting constellations for "
+                    + player.getUid() + ". ShadowUtils#setTravellerConstellations Line: "
+                    + Thread.currentThread().getStackTrace()[0].getLineNumber());
+
+        }
 
     }
 

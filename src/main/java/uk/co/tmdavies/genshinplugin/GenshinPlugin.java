@@ -7,6 +7,7 @@ import emu.grasscutter.server.event.EventHandler;
 import emu.grasscutter.server.event.HandlerPriority;
 import emu.grasscutter.server.event.player.PlayerJoinEvent;
 import uk.co.tmdavies.genshinplugin.commands.DumpCommand;
+import uk.co.tmdavies.genshinplugin.commands.SetElementCommand;
 import uk.co.tmdavies.genshinplugin.commands.SetLevelCommand;
 import uk.co.tmdavies.genshinplugin.commands.TestCommand;
 import uk.co.tmdavies.genshinplugin.events.PlayerListener;
@@ -75,6 +76,7 @@ public final class GenshinPlugin extends Plugin {
         new TestCommand(this);
         new DumpCommand(this);
         new SetLevelCommand(this);
+        new SetElementCommand(this);
 
         // Log a plugin status message.
         this.getLogger().info("GenshinPlugin has been enabled.");
