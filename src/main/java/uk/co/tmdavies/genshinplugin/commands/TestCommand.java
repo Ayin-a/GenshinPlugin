@@ -3,13 +3,20 @@ package uk.co.tmdavies.genshinplugin.commands;
 import emu.grasscutter.command.Command;
 import emu.grasscutter.command.CommandHandler;
 import emu.grasscutter.game.player.Player;
+import uk.co.tmdavies.genshinplugin.GenshinPlugin;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Command(label = "test", description = "A test command for a new plugin!",
-        usage = "test <artifactSet> <level> <stats...>", permission = "genshinplugin.artifact")
+@Command(label = "test", usage = "<artifactSet> <level> <mainstat:value%> <substat:value%?>...",
+        permission = "genshinplugin.artifact")
 public class TestCommand implements CommandHandler {
+
+    public TestCommand(GenshinPlugin plugin) {
+
+        plugin.getHandle().registerCommand(this);
+
+    }
 
     @Override
     public void execute(Player sender, Player targetPlayer, List<String> args) {
@@ -24,7 +31,7 @@ public class TestCommand implements CommandHandler {
 
         }
 
-        StringBuilder feedback = new StringBuilder(artifactSet + " " + level + " ");
+        StringBuilder feedback = new StringBuilder(artifactSet + " " + level);
 
         for (String string : stats) {
 
@@ -32,7 +39,7 @@ public class TestCommand implements CommandHandler {
 
         }
 
-        CommandHandler.sendMessage(sender, feedback.toString());
+        sender.dropMessage(feedback.toString());
 
     }
 }

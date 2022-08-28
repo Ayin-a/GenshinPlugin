@@ -1,10 +1,10 @@
 {
-  "name": "PluginTemplate",
-  "description": "The Grasscutter example plugin, which uses Maven.",
-  "version": "1.0.2-dev",
-  "authors": [ "KingRainbow44" ],
+  "name": "GenshinPlugin",
+  "description": "Genshin Impact Plugin to test stuff.",
+  "version": "0.1.0",
+  "authors": [ "Shadow" ],
   
-  "mainClass": "xyz.grasscutters.pltm.PluginTemplate",
+  "mainClass": "uk.co.tmdavies.genshinplugin.GenshinPlugin",
   
   "comments": [
     "This comments block doesn't need to be in your plugin.json.",

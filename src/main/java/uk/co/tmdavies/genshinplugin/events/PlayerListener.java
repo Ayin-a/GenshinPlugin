@@ -5,7 +5,7 @@ import emu.grasscutter.server.event.EventHandler;
 import emu.grasscutter.server.event.HandlerPriority;
 import emu.grasscutter.server.event.player.PlayerJoinEvent;
 import uk.co.tmdavies.genshinplugin.GenshinPlugin;
-import uk.co.tmdavies.genshinplugin.utils.ShadowConfig;
+import uk.co.tmdavies.genshinplugin.objects.PluginConfig;
 
 /**
  * A class containing all event handlers.
@@ -19,7 +19,7 @@ import uk.co.tmdavies.genshinplugin.utils.ShadowConfig;
  */
 public final class PlayerListener {
     /* Saves the configuration to a local variable, reducing calls made to the plugin instance. */
-    private static final ShadowConfig config = GenshinPlugin.CONFIG;
+    private static final PluginConfig config = GenshinPlugin.getInstance().configuration;
     
     /**
      * Called when the player joins the server.
@@ -27,10 +27,11 @@ public final class PlayerListener {
      */
     public static void onJoin(PlayerJoinEvent event) {
 
-        if (config.getString("Messages.Join") == null) return; // Check if the plugin is configured to send a message when a player joins.
+        if (!config.sendJoinMessage) return;
+        if (config.joinMessage == null) return; // Check if the plugin is configured to send a message when a player joins.
         
         Player player = event.getPlayer(); // Get the player who joined from the event.
-        player.dropMessage(config.getString("Messages.Join").replace("%player%", player.getNickname())); // "Drop" the player a message.
+        player.dropMessage(config.joinMessage.replace("%player%", player.getNickname())); // "Drop" the player a message.
 
     }
 }
